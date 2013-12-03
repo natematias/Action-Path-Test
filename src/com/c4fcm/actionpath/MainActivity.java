@@ -37,8 +37,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.android.geofence.GeofenceUtils.REMOVE_TYPE;
-import com.example.android.geofence.GeofenceUtils.REQUEST_TYPE;
+import com.c4fcm.actionpath.GeofenceUtils.REMOVE_TYPE;
+import com.c4fcm.actionpath.GeofenceUtils.REQUEST_TYPE;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;

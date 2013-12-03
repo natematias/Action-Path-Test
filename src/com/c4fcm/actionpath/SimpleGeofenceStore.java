@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.android.geofence;
+package com.c4fcm.actionpath;
 
 import android.content.Context;
 import android.content.SharedPreferences;
