@@ -85,24 +85,7 @@ public class MainActivity extends FragmentActivity {
     private GeofenceRequester mGeofenceRequester;
     // Remove geofences handler
     private GeofenceRemover mGeofenceRemover;
-    // Handle to geofence 1 latitude in the UI
-    private EditText mLatitude1;
-
-    // Handle to geofence 1 longitude in the UI
-    private EditText mLongitude1;
-
-    // Handle to geofence 1 radius in the UI
-    private EditText mRadius1;
-
-    // Handle to geofence 2 latitude in the UI
-    private EditText mLatitude2;
-
-    // Handle to geofence 2 longitude in the UI
-    private EditText mLongitude2;
-
-    // Handle to geofence 2 radius in the UI
-    private EditText mRadius2;
-
+ 
     /*
      * Internal lightweight geofence objects for geofence 1 and 2
      */
@@ -177,17 +160,10 @@ public class MainActivity extends FragmentActivity {
 
         // Instantiate a Geofence remover
         mGeofenceRemover = new GeofenceRemover(this);
-
+        addGeoFences();
         // Attach to the main UI
         setContentView(R.layout.activity_main);
 
-        // Get handles to the Geofence editor fields in the UI
-        mLatitude1 = (EditText) findViewById(R.id.value_latitude_1);
-        mLongitude1 = (EditText) findViewById(R.id.value_longitude_1);
-        mRadius1 = (EditText) findViewById(R.id.value_radius_1);
-        mLatitude2 = (EditText) findViewById(R.id.value_latitude_2);
-        mLongitude2 = (EditText) findViewById(R.id.value_longitude_2);
-        mRadius2 = (EditText) findViewById(R.id.value_radius_2);
     }
 
     /*
@@ -274,33 +250,6 @@ public class MainActivity extends FragmentActivity {
          */
         mUIGeofence1 = mPrefs.getGeofence("1");
         mUIGeofence2 = mPrefs.getGeofence("2");
-        /*
-         * If the returned geofences have values, use them to set
-         * values in the UI, using the previously-defined number
-         * formats.
-         */
-        if (mUIGeofence1 != null) {
-            mLatitude1.setText(
-                    mLatLngFormat.format(
-                            mUIGeofence1.getLatitude()));
-            mLongitude1.setText(
-                    mLatLngFormat.format(
-                            mUIGeofence1.getLongitude()));
-            mRadius1.setText(
-                    mRadiusFormat.format(
-                            mUIGeofence1.getRadius()));
-        }
-        if (mUIGeofence2 != null) {
-            mLatitude2.setText(
-                    mLatLngFormat.format(
-                            mUIGeofence2.getLatitude()));
-            mLongitude2.setText(
-                    mLatLngFormat.format(
-                            mUIGeofence2.getLongitude()));
-            mRadius2.setText(
-                    mRadiusFormat.format(
-                            mUIGeofence2.getRadius()));
-        }
     }
 
     /*
@@ -319,7 +268,7 @@ public class MainActivity extends FragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
-        switch (item.getItemId()) {
+    	/*        switch (item.getItemId()) {
 
             // Request to clear the geofence1 settings in the UI
             case R.id.menu_item_clear_geofence1:
@@ -328,34 +277,11 @@ public class MainActivity extends FragmentActivity {
                 mRadius1.setText(GeofenceUtils.EMPTY_STRING);
                 return true;
 
-            // Request to clear the geofence2 settings in the UI
-            case R.id.menu_item_clear_geofence2:
-                mLatitude2.setText(GeofenceUtils.EMPTY_STRING);
-                mLongitude2.setText(GeofenceUtils.EMPTY_STRING);
-                mRadius2.setText(GeofenceUtils.EMPTY_STRING);
-                return true;
-
-            // Request to clear both geofence settings in the UI
-            case R.id.menu_item_clear_geofences:
-                mLatitude1.setText(GeofenceUtils.EMPTY_STRING);
-                mLongitude1.setText(GeofenceUtils.EMPTY_STRING);
-                mRadius1.setText(GeofenceUtils.EMPTY_STRING);
-
-                mLatitude2.setText(GeofenceUtils.EMPTY_STRING);
-                mLongitude2.setText(GeofenceUtils.EMPTY_STRING);
-                mRadius2.setText(GeofenceUtils.EMPTY_STRING);
-                return true;
-
-            // Remove all geofences from storage
-            case R.id.menu_item_clear_geofence_history:
-                mPrefs.clearGeofence("1");
-                mPrefs.clearGeofence("2");
-                return true;
-
             // Pass through any other request
             default:
                 return super.onOptionsItemSelected(item);
-        }
+        }*/
+    	return super.onOptionsItemSelected(item);
     }
 
     /*
@@ -502,64 +428,9 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
-    /**
-     * Called when the user clicks the "Remove geofence 2" button
-     * @param view The view that triggered this callback
-     */
-    public void onUnregisterGeofence2Clicked(View view) {
-        /*
-         * Remove the geofence by creating a List of geofences to
-         * remove and sending it to Location Services. The List
-         * contains the id of geofence 2, which is "2".
-         * The removal happens asynchronously; Location Services calls
-         * onRemoveGeofencesByPendingIntentResult() (implemented in
-         * the current Activity) when the removal is done.
-         */
 
-        /*
-         * Record the removal as remove by list. If a connection error occurs,
-         * the app can automatically restart the removal if Google Play services
-         * can fix the error
-         */
-        mRemoveType = GeofenceUtils.REMOVE_TYPE.LIST;
 
-        // Create a List of 1 Geofence with the ID "2" and store it in the global list
-        mGeofenceIdsToRemove = Collections.singletonList("2");
-
-        /*
-         * Check for Google Play services. Do this after
-         * setting the request type. If connecting to Google Play services
-         * fails, onActivityResult is eventually called, and it needs to
-         * know what type of request was in progress.
-         */
-        if (!servicesConnected()) {
-
-            return;
-        }
-
-        // Try to remove the geofence
-        try {
-            mGeofenceRemover.removeGeofencesById(mGeofenceIdsToRemove);
-
-        // Catch errors with the provided geofence IDs
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (UnsupportedOperationException e) {
-            // Notify user that previous request hasn't finished.
-            Toast.makeText(this, R.string.remove_geofences_already_requested_error,
-                        Toast.LENGTH_LONG).show();
-        }
-    }
-
-    /**
-     * Called when the user clicks the "Register geofences" button.
-     * Get the geofence parameters for each geofence and add them to
-     * a List. Create the PendingIntent containing an Intent that
-     * Location Services sends to this app's broadcast receiver when
-     * Location Services detects a geofence transition. Send the List
-     * and the PendingIntent to Location Services.
-     */
-    public void onRegisterClicked(View view) {
+    public void addGeoFences() {
 
         /*
          * Record the request as an ADD. If a connection error occurs,
@@ -578,26 +449,16 @@ public class MainActivity extends FragmentActivity {
 
             return;
         }
-
-        /*
-         * Check that the input fields have values and that the values are with the
-         * permitted range
-         */
-        if (!checkInputFields()) {
-            return;
-        }
-
+        
         /*
          * Create a version of geofence 1 that is "flattened" into individual fields. This
          * allows it to be stored in SharedPreferences.
          */
         mUIGeofence1 = new SimpleGeofence(
             "1",
-            // Get latitude, longitude, and radius from the UI
-            Double.valueOf(mLatitude1.getText().toString()),
-            Double.valueOf(mLongitude1.getText().toString()),
-            Float.valueOf(mRadius1.getText().toString()),
-            // Set the expiration time
+            Double.valueOf(42.381196),
+            Double.valueOf(-71.111697),
+            Float.valueOf("50.0"),
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
             // Only detect entry transitions
             Geofence.GEOFENCE_TRANSITION_ENTER);
@@ -612,9 +473,9 @@ public class MainActivity extends FragmentActivity {
         mUIGeofence2 = new SimpleGeofence(
             "2",
             // Get latitude, longitude, and radius from the UI
-            Double.valueOf(mLatitude2.getText().toString()),
-            Double.valueOf(mLongitude2.getText().toString()),
-            Float.valueOf(mRadius2.getText().toString()),
+            Double.valueOf("42.380943"),
+            Double.valueOf("-71.111808"),
+            Float.valueOf("50.0"),
             // Set the expiration time
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
             // Detect both entry and exit transitions
@@ -642,190 +503,7 @@ public class MainActivity extends FragmentActivity {
                         Toast.LENGTH_LONG).show();
         }
     }
-    /**
-     * Check all the input values and flag those that are incorrect
-     * @return true if all the widget values are correct; otherwise false
-     */
-    private boolean checkInputFields() {
-        // Start with the input validity flag set to true
-        boolean inputOK = true;
 
-        /*
-         * Latitude, longitude, and radius values can't be empty. If they are, highlight the input
-         * field in red and put a Toast message in the UI. Otherwise set the input field highlight
-         * to black, ensuring that a field that was formerly wrong is reset.
-         */
-        if (TextUtils.isEmpty(mLatitude1.getText())) {
-            mLatitude1.setBackgroundColor(Color.RED);
-            Toast.makeText(this, R.string.geofence_input_error_missing, Toast.LENGTH_LONG).show();
-
-            // Set the validity to "invalid" (false)
-            inputOK = false;
-        } else {
-
-            mLatitude1.setBackgroundColor(Color.BLACK);
-        }
-
-        if (TextUtils.isEmpty(mLongitude1.getText())) {
-            mLongitude1.setBackgroundColor(Color.RED);
-            Toast.makeText(this, R.string.geofence_input_error_missing, Toast.LENGTH_LONG).show();
-
-            // Set the validity to "invalid" (false)
-            inputOK = false;
-        } else {
-
-            mLongitude1.setBackgroundColor(Color.BLACK);
-        }
-        if (TextUtils.isEmpty(mRadius1.getText())) {
-            mRadius1.setBackgroundColor(Color.RED);
-            Toast.makeText(this, R.string.geofence_input_error_missing, Toast.LENGTH_LONG).show();
-
-            // Set the validity to "invalid" (false)
-            inputOK = false;
-        } else {
-
-            mRadius1.setBackgroundColor(Color.BLACK);
-        }
-
-        if (TextUtils.isEmpty(mLatitude2.getText())) {
-            mLatitude2.setBackgroundColor(Color.RED);
-            Toast.makeText(this, R.string.geofence_input_error_missing, Toast.LENGTH_LONG).show();
-
-            // Set the validity to "invalid" (false)
-            inputOK = false;
-        } else {
-
-            mLatitude2.setBackgroundColor(Color.BLACK);
-        }
-        if (TextUtils.isEmpty(mLongitude2.getText())) {
-            mLongitude2.setBackgroundColor(Color.RED);
-            Toast.makeText(this, R.string.geofence_input_error_missing, Toast.LENGTH_LONG).show();
-
-            // Set the validity to "invalid" (false)
-            inputOK = false;
-        } else {
-
-            mLongitude2.setBackgroundColor(Color.BLACK);
-        }
-        if (TextUtils.isEmpty(mRadius2.getText())) {
-            mRadius2.setBackgroundColor(Color.RED);
-            Toast.makeText(this, R.string.geofence_input_error_missing, Toast.LENGTH_LONG).show();
-
-            // Set the validity to "invalid" (false)
-            inputOK = false;
-        } else {
-
-            mRadius2.setBackgroundColor(Color.BLACK);
-        }
-
-        /*
-         * If all the input fields have been entered, test to ensure that their values are within
-         * the acceptable range. The tests can't be performed until it's confirmed that there are
-         * actual values in the fields.
-         */
-        if (inputOK) {
-
-            /*
-             * Get values from the latitude, longitude, and radius fields.
-             */
-            double lat1 = Double.valueOf(mLatitude1.getText().toString());
-            double lng1 = Double.valueOf(mLongitude1.getText().toString());
-            double lat2 = Double.valueOf(mLatitude1.getText().toString());
-            double lng2 = Double.valueOf(mLongitude1.getText().toString());
-            float rd1 = Float.valueOf(mRadius1.getText().toString());
-            float rd2 = Float.valueOf(mRadius2.getText().toString());
-
-            /*
-             * Test latitude and longitude for minimum and maximum values. Highlight incorrect
-             * values and set a Toast in the UI.
-             */
-
-            if (lat1 > GeofenceUtils.MAX_LATITUDE || lat1 < GeofenceUtils.MIN_LATITUDE) {
-                mLatitude1.setBackgroundColor(Color.RED);
-                Toast.makeText(
-                        this,
-                        R.string.geofence_input_error_latitude_invalid,
-                        Toast.LENGTH_LONG).show();
-
-                // Set the validity to "invalid" (false)
-                inputOK = false;
-            } else {
-
-                mLatitude1.setBackgroundColor(Color.BLACK);
-            }
-
-            if ((lng1 > GeofenceUtils.MAX_LONGITUDE) || (lng1 < GeofenceUtils.MIN_LONGITUDE)) {
-                mLongitude1.setBackgroundColor(Color.RED);
-                Toast.makeText(
-                        this,
-                        R.string.geofence_input_error_longitude_invalid,
-                        Toast.LENGTH_LONG).show();
-
-                // Set the validity to "invalid" (false)
-                inputOK = false;
-            } else {
-
-                mLongitude1.setBackgroundColor(Color.BLACK);
-            }
-
-            if (lat2 > GeofenceUtils.MAX_LATITUDE || lat2 < GeofenceUtils.MIN_LATITUDE) {
-                mLatitude2.setBackgroundColor(Color.RED);
-                Toast.makeText(
-                        this,
-                        R.string.geofence_input_error_latitude_invalid,
-                        Toast.LENGTH_LONG).show();
-
-                // Set the validity to "invalid" (false)
-                inputOK = false;
-            } else {
-
-                mLatitude2.setBackgroundColor(Color.BLACK);
-            }
-
-            if ((lng2 > GeofenceUtils.MAX_LONGITUDE) || (lng2 < GeofenceUtils.MIN_LONGITUDE)) {
-                mLongitude2.setBackgroundColor(Color.RED);
-                Toast.makeText(
-                        this,
-                        R.string.geofence_input_error_longitude_invalid,
-                        Toast.LENGTH_LONG).show();
-
-                // Set the validity to "invalid" (false)
-                inputOK = false;
-            } else {
-
-                mLongitude2.setBackgroundColor(Color.BLACK);
-            }
-            if (rd1 < GeofenceUtils.MIN_RADIUS) {
-                mRadius1.setBackgroundColor(Color.RED);
-                Toast.makeText(
-                        this,
-                        R.string.geofence_input_error_radius_invalid,
-                        Toast.LENGTH_LONG).show();
-
-                // Set the validity to "invalid" (false)
-                inputOK = false;
-            } else {
-
-                mRadius1.setBackgroundColor(Color.BLACK);
-            }
-            if (rd2 < GeofenceUtils.MIN_RADIUS) {
-                mRadius2.setBackgroundColor(Color.RED);
-                Toast.makeText(
-                        this,
-                        R.string.geofence_input_error_radius_invalid,
-                        Toast.LENGTH_LONG).show();
-
-                // Set the validity to "invalid" (false)
-                inputOK = false;
-            } else {
-
-                mRadius2.setBackgroundColor(Color.BLACK);
-            }
-        }
-
-        // If everything passes, the validity flag will still be true, otherwise it will be false.
-        return inputOK;
-    }
 
     /**
      * Define a Broadcast receiver that receives updates from connection listeners and
