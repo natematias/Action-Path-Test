@@ -121,4 +121,16 @@ public final class GeofenceUtils {
 
     public static final CharSequence GEOFENCE_ID_DELIMITER = ",";
 
+    
+    public static final int SNOOZE_DURATION = 20000;
+    public static final int DEFAULT_TIMER_DURATION = 10000;
+    public static final String ACTION_SNOOZE = "com.c4fcm.actionpath.ACTION_SNOOZE";
+    public static final String ACTION_DISMISS = "com.c4fcm.actionpath.ACTION_DISMISS";
+    public static final String ACTION_PING = "com.c4fcm.actionpath.ACTION_PING";
+    public static final String EXTRA_MESSAGE= "com.c4fcm.actionpath.EXTRA_MESSAGE";
+    public static final String EXTRA_TIMER = "com.c4fcm.actionpath.EXTRA_TIMER";
+    public static final int NOTIFICATION_ID = 001;
+    public static final String DEBUG_TAG = "ActionPath";
+    
+    
 }

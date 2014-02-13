@@ -111,4 +111,29 @@
     <!-- Number patterns -->
     <string name="lat_lng_pattern">* ###.00000000;* -###.00000000</string>
     <string name="radius_pattern">* #.0000</string>
+    
+    <!-- notifications strings -->
+    
+    <string name="notification">ActionPath  Notification</string>
+
+    <!--  Buttons -->
+    <string name="ping">Ping!</string>
+    <string name="snooze">Popup!</string>
+    <string name="dismiss">Back to Main</string>
+
+    <!--  Text Views -->
+
+    <string name="ping_text">Set Seconds Until Ping</string>
+    <string name="done_snoozing">Done Snoozing.</string>
+    <string name="seconds_default">10</string>
+    <string name="reminder_label">Reminder Text</string>
+    <string name="reminder_text">Don\'t forget!</string>
+
+    <!--  Logging -->
+
+    <string name="snoozing">Snoozing!</string>
+    <string name="timer_start">Setting the timer</string>
+    <string name="sleep_error">Sleep failure</string>
+    <string name="timer_finished">Timer finished.</string>
+    
 </resources>
