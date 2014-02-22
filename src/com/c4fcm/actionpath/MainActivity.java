@@ -90,6 +90,12 @@ public class MainActivity extends FragmentActivity {
      */
     private SimpleGeofence mUIGeofence1;
     private SimpleGeofence mUIGeofence2;
+    private SimpleGeofence mUIGeofence3;
+    private SimpleGeofence mUIGeofence4;
+    private SimpleGeofence mUIGeofence5;
+    private SimpleGeofence mUIGeofence6;
+    private SimpleGeofence mUIGeofence7;
+    private SimpleGeofence mUIGeofence8;
 
     // decimal formats for latitude, longitude, and radius
     private DecimalFormat mLatLngFormat;
@@ -249,6 +255,12 @@ public class MainActivity extends FragmentActivity {
          */
         mUIGeofence1 = mPrefs.getGeofence("1");
         mUIGeofence2 = mPrefs.getGeofence("2");
+        mUIGeofence3 = mPrefs.getGeofence("3");
+        mUIGeofence4 = mPrefs.getGeofence("4");
+        mUIGeofence5 = mPrefs.getGeofence("5");
+        mUIGeofence6 = mPrefs.getGeofence("6");
+        mUIGeofence7 = mPrefs.getGeofence("7");
+        mUIGeofence8 = mPrefs.getGeofence("8");
     }
 
     /*
@@ -291,6 +303,12 @@ public class MainActivity extends FragmentActivity {
         super.onPause();
         mPrefs.setGeofence("1", mUIGeofence1);
         mPrefs.setGeofence("2", mUIGeofence2);
+        mPrefs.setGeofence("3", mUIGeofence3);
+        mPrefs.setGeofence("4", mUIGeofence4);
+        mPrefs.setGeofence("5", mUIGeofence5);
+        mPrefs.setGeofence("6", mUIGeofence6);
+        mPrefs.setGeofence("7", mUIGeofence7);
+        mPrefs.setGeofence("8", mUIGeofence8);
     }
 
     /**
@@ -452,12 +470,14 @@ public class MainActivity extends FragmentActivity {
         /*
          * Create a version of geofence 1 that is "flattened" into individual fields. This
          * allows it to be stored in SharedPreferences.
+         * 
+         * #1 --> Last lamppost before you get to medical building pass through
          */
         mUIGeofence1 = new SimpleGeofence(
             "1",
-            Double.valueOf(42.381196),
-            Double.valueOf(-71.111697),
-            Float.valueOf("50.0"),
+            Double.valueOf(42.361420),
+            Double.valueOf(-71.086884),
+            Float.valueOf("15.0"),
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
             // Only detect entry transitions
             Geofence.GEOFENCE_TRANSITION_ENTER);
@@ -468,13 +488,15 @@ public class MainActivity extends FragmentActivity {
         /*
          * Create a version of geofence 2 that is "flattened" into individual fields. This
          * allows it to be stored in SharedPreferences.
+         * 
+         * #2 --> Tree in front of Old Media Lab entrance on medical building side
          */
         mUIGeofence2 = new SimpleGeofence(
             "2",
             // Get latitude, longitude, and radius from the UI
-            Double.valueOf("42.380943"),
-            Double.valueOf("-71.111808"),
-            Float.valueOf("50.0"),
+            Double.valueOf("42.361161"),
+            Double.valueOf("-71.087337"),
+            Float.valueOf("20.0"),
             // Set the expiration time
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
             // Detect both entry and exit transitions
@@ -483,6 +505,132 @@ public class MainActivity extends FragmentActivity {
 
         // Store this flat version in SharedPreferences
         mPrefs.setGeofence("2", mUIGeofence2);
+        
+        /*
+         * Create a version of geofence 2 that is "flattened" into individual fields. This
+         * allows it to be stored in SharedPreferences.
+         * 
+         * #3 --> Corner post of old media lab overhang on medical building side
+         */
+        mUIGeofence3 = new SimpleGeofence(
+            "3",
+            // Get latitude, longitude, and radius from the UI
+            Double.valueOf("42.361136"),
+            Double.valueOf("-71.087484"),
+            Float.valueOf("20.0"),
+            // Set the expiration time
+            GEOFENCE_EXPIRATION_IN_MILLISECONDS,
+            // Detect both entry and exit transitions
+            Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT
+            );
+
+        // Store this flat version in SharedPreferences
+        mPrefs.setGeofence("3", mUIGeofence3);
+        
+        /*
+         * Create a version of geofence 2 that is "flattened" into individual fields. This
+         * allows it to be stored in SharedPreferences.
+         * 
+         * #4 --> Tree near overhang on Ames Street side of old building
+         */
+        mUIGeofence4 = new SimpleGeofence(
+            "4",
+            // Get latitude, longitude, and radius from the UI
+            Double.valueOf("42.361202"),
+            Double.valueOf("-71.088102"),
+            Float.valueOf("10.0"),
+            // Set the expiration time
+            GEOFENCE_EXPIRATION_IN_MILLISECONDS,
+            // Detect both entry and exit transitions
+            Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT
+            );
+
+        // Store this flat version in SharedPreferences
+        mPrefs.setGeofence("4", mUIGeofence4);
+        
+        /*
+         * Create a version of geofence 2 that is "flattened" into individual fields. This
+         * allows it to be stored in SharedPreferences.
+         * 
+         * #5 --> Front door on New media lab building on medical building side
+         */
+        mUIGeofence5 = new SimpleGeofence(
+            "5",
+            // Get latitude, longitude, and radius from the UI
+            Double.valueOf("42.360441"),
+            Double.valueOf("-71.086954"),
+            Float.valueOf("20.0"),
+            // Set the expiration time
+            GEOFENCE_EXPIRATION_IN_MILLISECONDS,
+            // Detect both entry and exit transitions
+            Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT
+            );
+
+        // Store this flat version in SharedPreferences
+        mPrefs.setGeofence("5", mUIGeofence5);
+        
+        /*
+         * Create a version of geofence 2 that is "flattened" into individual fields. This
+         * allows it to be stored in SharedPreferences.
+         * 
+         * #6 --> First tree near bike racks medical building side heading toward food trucks
+         */
+        mUIGeofence6 = new SimpleGeofence(
+            "6",
+            // Get latitude, longitude, and radius from the UI
+            Double.valueOf("42.360544"),
+            Double.valueOf("-71.086702"),
+            Float.valueOf("20.0"),
+            // Set the expiration time
+            GEOFENCE_EXPIRATION_IN_MILLISECONDS,
+            // Detect both entry and exit transitions
+            Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT
+            );
+
+        // Store this flat version in SharedPreferences
+        mPrefs.setGeofence("6", mUIGeofence6);
+        
+        /*
+         * Create a version of geofence 2 that is "flattened" into individual fields. This
+         * allows it to be stored in SharedPreferences.
+         * 
+         * #7 --> Walkway from E15 -> E14 on civic side
+         */
+        mUIGeofence7 = new SimpleGeofence(
+            "7",
+            // Get latitude, longitude, and radius from the UI
+            Double.valueOf("42.360677"),
+            Double.valueOf("-71.087477"),
+            Float.valueOf("5.0"),
+            // Set the expiration time
+            GEOFENCE_EXPIRATION_IN_MILLISECONDS,
+            // Detect both entry and exit transitions
+            Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT
+            );
+
+        // Store this flat version in SharedPreferences
+        mPrefs.setGeofence("7", mUIGeofence7);
+        
+        /*
+         * Create a version of geofence 2 that is "flattened" into individual fields. This
+         * allows it to be stored in SharedPreferences.
+         * 
+         * #8 --> In front of elevators in E14
+         */
+        mUIGeofence8 = new SimpleGeofence(
+            "8",
+            // Get latitude, longitude, and radius from the UI
+            Double.valueOf("42.360398"),
+            Double.valueOf("-71.087351"),
+            Float.valueOf("5.0"),
+            // Set the expiration time
+            GEOFENCE_EXPIRATION_IN_MILLISECONDS,
+            // Detect both entry and exit transitions
+            Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT
+            );
+
+        // Store this flat version in SharedPreferences
+        mPrefs.setGeofence("8", mUIGeofence8);
 
         /*
          * Add Geofence objects to a List. toGeofence()
@@ -491,6 +639,13 @@ public class MainActivity extends FragmentActivity {
          */
         mCurrentGeofences.add(mUIGeofence1.toGeofence());
         mCurrentGeofences.add(mUIGeofence2.toGeofence());
+        mCurrentGeofences.add(mUIGeofence3.toGeofence());
+        mCurrentGeofences.add(mUIGeofence4.toGeofence());
+        mCurrentGeofences.add(mUIGeofence5.toGeofence());
+        mCurrentGeofences.add(mUIGeofence6.toGeofence());
+        mCurrentGeofences.add(mUIGeofence7.toGeofence());
+        mCurrentGeofences.add(mUIGeofence8.toGeofence());
+        
 
         // Start the request. Fail if there's already a request in progress
         try {
