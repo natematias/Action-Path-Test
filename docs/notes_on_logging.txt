@@ -5,6 +5,13 @@ To access these logs type:
    cd /storage/emulated/legacy/Android/data/action_path
    cat geodata.txt
 
-Currently, the logs do monitor the time and the current location but do not get the geofence correct, or the enter/exit status correct. I will have to refactor the logging system into its own AsyncTask rather than an Activity.
+Currently, the logs do monitor the time and the current location but do not get the geofence correct, or the enter/exit status correct. 
+
+Sample log line:
+  action ,ids, timestamp             , latitude , longitude
+  Entered,1:2,2014-02-21 22:02:30.608,42.3802528,-71.1114959
+
+
+I will have to refactor the logging system into its own AsyncTask rather than an Activity.
 
 https://developer.android.com/reference/android/os/AsyncTask.html
