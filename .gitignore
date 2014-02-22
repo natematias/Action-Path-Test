@@ -4,3 +4,4 @@ gen
 *.class
 project.properties
 .classpath
+*.DS_Store

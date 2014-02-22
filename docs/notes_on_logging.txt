@@ -1,0 +1,10 @@
+logs are stored at: /storage/emulated/legacy/Android/data/action_path
+
+To access these logs type:
+   platform-tools/adb shell
+   cd /storage/emulated/legacy/Android/data/action_path
+   cat geodata.txt
+
+Currently, the logs do monitor the time and the current location but do not get the geofence correct, or the enter/exit status correct. I will have to refactor the logging system into its own AsyncTask rather than an Activity.
+
+https://developer.android.com/reference/android/os/AsyncTask.html

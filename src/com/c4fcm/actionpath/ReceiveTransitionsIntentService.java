@@ -84,7 +84,12 @@ public class ReceiveTransitionsIntentService extends IntentService {
                 for (int index = 0; index < geofences.size() ; index++) {
                     geofenceIds[index] = geofences.get(index).getRequestId();
                 }
+                // log the first transition
+
                 String ids = TextUtils.join(GeofenceUtils.GEOFENCE_ID_DELIMITER,geofenceIds);
+                
+                logTransition(getTransitionString(transition), ids);
+
                 String transitionType = getTransitionString(transition);
 
                 sendNotification(transitionType, ids);
@@ -149,9 +154,24 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
         // Issue the notification
         mNotificationManager.notify(0, builder.build());
-    }
+        
+        
 
+    }
+    
+    private void logTransition(String transitionType, String id){
+        // Create an intent that tells ResultActivity to log 
+        // the fact that the geofence boundary was passed
+        Intent logTransition = new Intent(this, ResultActivity.class);
+        logTransition.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        logTransition.setAction(GeofenceUtils.ACTION_LOG_TRANSITION);
+        logTransition.putExtra("transitionType", transitionType);
+        logTransition.putExtra("id", id);
+        Log.i("SENDING transition", transitionType + " - "+ id);
+        startActivity(logTransition);
+    }
     /**
+
      * Maps geofence transition types to their human-readable equivalents.
      * @param transitionType A transition type constant defined in Geofence
      * @return A String indicating the type of transition

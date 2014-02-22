@@ -33,6 +33,10 @@ public final class GeofenceUtils {
     public static final String APPTAG = "Geofence Detection";
 
     // Intent actions
+    public static final String ACTION_LOG_TRANSITION =
+            "com.example.android.geofence.ACTION_LOG_TRANSITION";
+    
+    
     public static final String ACTION_CONNECTION_ERROR =
             "com.example.android.geofence.ACTION_CONNECTION_ERROR";
 
@@ -119,7 +123,7 @@ public final class GeofenceUtils {
     // A string of length 0, used to clear out input fields
     public static final String EMPTY_STRING = new String();
 
-    public static final CharSequence GEOFENCE_ID_DELIMITER = ",";
+    public static final CharSequence GEOFENCE_ID_DELIMITER = ":";
 
     
     public static final int SNOOZE_DURATION = 20000;
