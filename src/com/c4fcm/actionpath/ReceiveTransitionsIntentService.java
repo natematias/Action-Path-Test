@@ -22,7 +22,7 @@ import java.util.List;
  * the event.
  */
 public class ReceiveTransitionsIntentService extends IntentService {
-
+	
     /**
      * Sets an identifier for this class' background thread
      */
@@ -88,10 +88,18 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
                 String ids = TextUtils.join(GeofenceUtils.GEOFENCE_ID_DELIMITER,geofenceIds);
                 
-                logTransition(getTransitionString(transition), ids);
-
+                //sends an intent to ResultActivity, which is not suitable for logging
+                //logTransition(getTransitionString(transition), ids);
+                
                 String transitionType = getTransitionString(transition);
 
+                //activate the logging system
+            	Intent loggerServiceIntent = new Intent(this,LoggerService.class);
+                loggerServiceIntent.putExtra("transitionType", transitionType);
+                loggerServiceIntent.putExtra("ids", geofenceIds);
+            	startService(loggerServiceIntent);
+                                
+            	//create the notification
                 sendNotification(transitionType, ids);
 
                 // Log the transition type and a message
@@ -159,17 +167,6 @@ public class ReceiveTransitionsIntentService extends IntentService {
 
     }
     
-    private void logTransition(String transitionType, String id){
-        // Create an intent that tells ResultActivity to log 
-        // the fact that the geofence boundary was passed
-        Intent logTransition = new Intent(this, ResultActivity.class);
-        logTransition.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        logTransition.setAction(GeofenceUtils.ACTION_LOG_TRANSITION);
-        logTransition.putExtra("transitionType", transitionType);
-        logTransition.putExtra("id", id);
-        Log.i("SENDING transition", transitionType + " - "+ id);
-        startActivity(logTransition);
-    }
     /**
 
      * Maps geofence transition types to their human-readable equivalents.
@@ -189,4 +186,6 @@ public class ReceiveTransitionsIntentService extends IntentService {
                 return getString(R.string.geofence_transition_unknown);
         }
     }
+    
+  
 }
