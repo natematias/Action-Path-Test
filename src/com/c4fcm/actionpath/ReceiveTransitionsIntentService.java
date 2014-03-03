@@ -3,13 +3,13 @@ package com.c4fcm.actionpath;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
 
+import android.app.Notification.Builder;
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
+import android.graphics.BitmapFactory;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -100,9 +100,9 @@ public class ReceiveTransitionsIntentService extends IntentService {
             	startService(loggerServiceIntent);
                                 
             	//create the notification
-                sendNotification(transitionType, ids);
+                sendNotification(transitionType, geofenceIds);
 
-                // Log the transition type and a message
+                // Log the transition type and a message to adb debug
                 Log.d(GeofenceUtils.APPTAG,
                         getString(
                                 R.string.geofence_transition_notification_title,
@@ -126,47 +126,45 @@ public class ReceiveTransitionsIntentService extends IntentService {
      * @param transitionType The type of transition that occurred.
      *
      */
-    private void sendNotification(String transitionType, String ids) {
+    private void sendNotification(String transitionType, String[] ids) {
 
-        // Create an explicit content Intent that starts the ResultActivity
-        Intent notificationIntent =
-                new Intent(getApplicationContext(),ResultActivity.class);
-
-        // Construct a task stack
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-
-        // Adds the parent of ResultActivity (defined in manifest) to the stack
-        stackBuilder.addParentStack(ResultActivity.class);
-
-        // Push the content Intent onto the stack
-        stackBuilder.addNextIntent(notificationIntent);
-
-        // Get a PendingIntent containing the entire back stack
-        PendingIntent notificationPendingIntent =
-                stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        // Get a notification builder that's compatible with platform versions >= 4
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-
-        // Set the notification contents
-        builder.setSmallIcon(R.drawable.ic_notification)
-               .setContentTitle(
-                       getString(R.string.geofence_transition_notification_title,
-                               transitionType, ids))
-               .setContentText(getString(R.string.geofence_transition_notification_text))
-               .setContentIntent(notificationPendingIntent);
-
-        // Get an instance of the Notification manager
-        NotificationManager mNotificationManager =
-            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        // Issue the notification
-        mNotificationManager.notify(0, builder.build());
-        
-        
+    	PendingIntent pi = getPendingIntent();
+    	Builder notificationBuilder = new Notification.Builder(this);
+    	notificationBuilder.setContentTitle("ActionPath " + transitionType + " " + TextUtils.join(GeofenceUtils.GEOFENCE_ID_DELIMITER,ids))
+    	// Notification title
+    	.setContentText("You have " + transitionType + " " + ids.length + "ActionPaths")
+    	// you can put subject line.
+    	.setSmallIcon(R.drawable.ic_launcher)
+    	// Set your notification icon here.
+    	.addAction(R.drawable.ic_launcher, "Respond",pi)
+    	.addAction(
+    			R.drawable.ic_action_search,
+    			"Act Now", pi);
+    	// Now create the Big picture notification.
+    	Notification notification = new Notification.BigPictureStyle(notificationBuilder)
+    	.bigPicture(
+    			BitmapFactory.decodeResource(getResources(),
+    					R.drawable.ic_notification_placeholder)).build();
+    	// Put the auto cancel notification flag
+    	notification.flags |= Notification.FLAG_AUTO_CANCEL;
+    	NotificationManager notificationManager = getNotificationManager();
+    	notificationManager.notify(0, notification);
+    	
+    	// TODO: Create a way to clear the notification once it has been clicked
 
     }
     
+    //creates a PendingIntent for bigPicture notifications
+    public PendingIntent getPendingIntent() {
+    	return PendingIntent.getActivity(this, 0, new Intent(this,
+    			MainActivity.class), 0);
+    }
+
+    public NotificationManager getNotificationManager() {
+    	return (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+    }
+
+
     /**
 
      * Maps geofence transition types to their human-readable equivalents.
