@@ -8,13 +8,22 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 /**
  * This class receives geofence transition events from Location Services, in the
@@ -127,8 +136,47 @@ public class ReceiveTransitionsIntentService extends IntentService {
      *
      */
     private void sendNotification(String transitionType, String[] ids) {
+    	
+    	/*Random r=new Random();
+    	int mId = r.nextInt(1000);*/
+    	
+    	//NOTIFICATION FOR OLDER ANDROID DEVICES
+    	NotificationCompat.Builder mBuilder =
+    	        new NotificationCompat.Builder(this)
+    	        .setSmallIcon(R.drawable.ic_stat_notification)
+    	        .setContentTitle("Geofence Transition")
+    	        .setContentText(TextUtils.join(GeofenceUtils.GEOFENCE_ID_DELIMITER,ids));
+    	// Creates an explicit intent for an Activity in your app
+    	Intent resultIntent = new Intent(this, MainActivity.class);
 
-    	PendingIntent pi = getPendingIntent();
+    	// The stack builder object will contain an artificial back stack for the
+    	// started Activity.
+    	// This ensures that navigating backward from the Activity leads out of
+    	// your application to the Home screen.
+    	TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+    	// Adds the back stack for the Intent (but not the Intent itself)
+    	stackBuilder.addParentStack(MainActivity.class);
+    	// Adds the Intent that starts the Activity to the top of the stack
+    	stackBuilder.addNextIntent(resultIntent);
+    	PendingIntent resultPendingIntent =
+    	        stackBuilder.getPendingIntent(
+    	            0,
+    	            PendingIntent.FLAG_UPDATE_CURRENT
+    	        );
+    	mBuilder.setContentIntent(resultPendingIntent);
+    	NotificationManager mNotificationManager =
+    	    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    	// mId allows you to update the notification later on.
+    	mNotificationManager.notify(100, mBuilder.build());
+    	
+    	try {
+    		this.playSound(getBaseContext());
+    	} catch (Exception e) {
+    	    e.printStackTrace();
+    	}
+    	
+    	//NOTIFICATIONS FOR MORE RECENT ANDROIDS (16 and up)
+    	/*PendingIntent pi = getPendingIntent();
     	Builder notificationBuilder = new Notification.Builder(this);
     	notificationBuilder.setContentTitle("ActionPath " + transitionType + " " + TextUtils.join(GeofenceUtils.GEOFENCE_ID_DELIMITER,ids))
     	// Notification title
@@ -148,10 +196,28 @@ public class ReceiveTransitionsIntentService extends IntentService {
     	// Put the auto cancel notification flag
     	notification.flags |= Notification.FLAG_AUTO_CANCEL;
     	NotificationManager notificationManager = getNotificationManager();
-    	notificationManager.notify(0, notification);
+    	notificationManager.notify(0, notification);*/
     	
     	// TODO: Create a way to clear the notification once it has been clicked
 
+    }
+    
+    public void playSound(Context context) throws IllegalArgumentException, 
+    SecurityException, 
+    IllegalStateException,
+    IOException {
+
+    	Uri soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+    	MediaPlayer mMediaPlayer = new MediaPlayer();
+    	mMediaPlayer.setDataSource(context, soundUri);
+    	final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
+    	if (audioManager.getStreamVolume(AudioManager.STREAM_ALARM) != 0) {
+    		mMediaPlayer.setAudioStreamType(AudioManager.STREAM_ALARM);
+    		mMediaPlayer.setLooping(true);
+    		mMediaPlayer.prepare();
+    		mMediaPlayer.start();
+    	}
     }
     
     //creates a PendingIntent for bigPicture notifications
