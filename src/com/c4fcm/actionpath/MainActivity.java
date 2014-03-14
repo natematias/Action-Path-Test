@@ -475,9 +475,9 @@ public class MainActivity extends FragmentActivity {
          */
         mUIGeofence1 = new SimpleGeofence(
             "1",
-            Double.valueOf(42.361420),
-            Double.valueOf(-71.086884),
-            Float.valueOf("15.0"),
+            Double.valueOf(42.361228),
+            Double.valueOf(-71.087067),
+            Float.valueOf("1.0"),
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
             // Only detect entry transitions
             Geofence.GEOFENCE_TRANSITION_ENTER);
@@ -494,9 +494,9 @@ public class MainActivity extends FragmentActivity {
         mUIGeofence2 = new SimpleGeofence(
             "2",
             // Get latitude, longitude, and radius from the UI
-            Double.valueOf("42.361161"),
-            Double.valueOf("-71.087337"),
-            Float.valueOf("20.0"),
+            Double.valueOf("42.361228"),
+            Double.valueOf("-71.087067"),
+            Float.valueOf("5.0"),
             // Set the expiration time
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
             // Detect both entry and exit transitions
@@ -515,9 +515,9 @@ public class MainActivity extends FragmentActivity {
         mUIGeofence3 = new SimpleGeofence(
             "3",
             // Get latitude, longitude, and radius from the UI
-            Double.valueOf("42.361136"),
-            Double.valueOf("-71.087484"),
-            Float.valueOf("20.0"),
+            Double.valueOf("42.361228"),
+            Double.valueOf("-71.087067"),
+            Float.valueOf("10.0"),
             // Set the expiration time
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
             // Detect both entry and exit transitions
@@ -536,9 +536,9 @@ public class MainActivity extends FragmentActivity {
         mUIGeofence4 = new SimpleGeofence(
             "4",
             // Get latitude, longitude, and radius from the UI
-            Double.valueOf("42.361202"),
-            Double.valueOf("-71.088102"),
-            Float.valueOf("10.0"),
+            Double.valueOf("42.361016"),
+            Double.valueOf("-71.08715"),
+            Float.valueOf("5.0"),
             // Set the expiration time
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
             // Detect both entry and exit transitions
@@ -557,9 +557,9 @@ public class MainActivity extends FragmentActivity {
         mUIGeofence5 = new SimpleGeofence(
             "5",
             // Get latitude, longitude, and radius from the UI
-            Double.valueOf("42.360441"),
-            Double.valueOf("-71.086954"),
-            Float.valueOf("20.0"),
+            Double.valueOf("42.360963"),
+            Double.valueOf("-71.087117"),
+            Float.valueOf("5.0"),
             // Set the expiration time
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
             // Detect both entry and exit transitions
@@ -578,9 +578,9 @@ public class MainActivity extends FragmentActivity {
         mUIGeofence6 = new SimpleGeofence(
             "6",
             // Get latitude, longitude, and radius from the UI
-            Double.valueOf("42.360544"),
-            Double.valueOf("-71.086702"),
-            Float.valueOf("20.0"),
+            Double.valueOf("42.36091"),
+            Double.valueOf("-71.087087"),
+            Float.valueOf("5.0"),
             // Set the expiration time
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
             // Detect both entry and exit transitions
@@ -599,8 +599,8 @@ public class MainActivity extends FragmentActivity {
         mUIGeofence7 = new SimpleGeofence(
             "7",
             // Get latitude, longitude, and radius from the UI
-            Double.valueOf("42.360677"),
-            Double.valueOf("-71.087477"),
+            Double.valueOf("42.360853"),
+            Double.valueOf("-71.087052"),
             Float.valueOf("5.0"),
             // Set the expiration time
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
@@ -620,8 +620,8 @@ public class MainActivity extends FragmentActivity {
         mUIGeofence8 = new SimpleGeofence(
             "8",
             // Get latitude, longitude, and radius from the UI
-            Double.valueOf("42.360398"),
-            Double.valueOf("-71.087351"),
+            Double.valueOf("42.360935"),
+            Double.valueOf("-71.087012"),
             Float.valueOf("5.0"),
             // Set the expiration time
             GEOFENCE_EXPIRATION_IN_MILLISECONDS,
