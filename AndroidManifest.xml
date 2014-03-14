@@ -6,7 +6,7 @@
 	
     <!--  changed minSdkVersion from 8 to 16 to do rich notifications -->
     <uses-sdk
-        android:minSdkVersion="16"
+        android:minSdkVersion="15"
         android:targetSdkVersion="19" />
     
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

@@ -111,6 +111,13 @@ public class ReceiveTransitionsIntentService extends IntentService {
             	//create the notification
                 sendNotification(transitionType, geofenceIds);
 
+            	try {
+            		this.playSound(getBaseContext());
+            	} catch (Exception e) {
+            	    e.printStackTrace();
+            	}
+            	
+            	
                 // Log the transition type and a message to adb debug
                 Log.d(GeofenceUtils.APPTAG,
                         getString(
@@ -139,32 +146,22 @@ public class ReceiveTransitionsIntentService extends IntentService {
     	
     	/*Random r=new Random();
     	int mId = r.nextInt(1000);*/
+    	Intent resultIntent = new Intent(this, MainActivity.class);
+    	PendingIntent resultPendingIntent = PendingIntent.getActivity(getBaseContext(),
+    	        105, resultIntent,
+    	        PendingIntent.FLAG_CANCEL_CURRENT);
     	
     	//NOTIFICATION FOR OLDER ANDROID DEVICES
     	NotificationCompat.Builder mBuilder =
     	        new NotificationCompat.Builder(this)
     	        .setSmallIcon(R.drawable.ic_stat_notification)
     	        .setContentTitle("Geofence Transition")
+    	        .setContentIntent(resultPendingIntent)
     	        .setContentText(TextUtils.join(GeofenceUtils.GEOFENCE_ID_DELIMITER,ids));
     	// Creates an explicit intent for an Activity in your app
-    	Intent resultIntent = new Intent(this, MainActivity.class);
 
-    	// The stack builder object will contain an artificial back stack for the
-    	// started Activity.
-    	// This ensures that navigating backward from the Activity leads out of
-    	// your application to the Home screen.
-    	TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-    	// Adds the back stack for the Intent (but not the Intent itself)
-    	stackBuilder.addParentStack(MainActivity.class);
-    	// Adds the Intent that starts the Activity to the top of the stack
-    	stackBuilder.addNextIntent(resultIntent);
-    	PendingIntent resultPendingIntent =
-    	        stackBuilder.getPendingIntent(
-    	            0,
-    	            PendingIntent.FLAG_UPDATE_CURRENT
-    	        );
-    	mBuilder.setContentIntent(resultPendingIntent);
-    	NotificationManager mNotificationManager =
+   
+    	    	NotificationManager mNotificationManager =
     	    (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     	// mId allows you to update the notification later on.
     	mNotificationManager.notify(100, mBuilder.build());
